@@ -1,16 +1,42 @@
-# Traceability Tool
-# Configuration for running with docker compose 
-
-version: '3'
+# ARIADNA — base de datos de trazabilidad
+#
+# Solo se contiene la base de datos. El resto del framework es una herramienta
+# de escritorio: traza abre una ventana Swing y apiTraceability la lanza, de
+# modo que no pueden ejecutarse dentro de un contenedor sin servidor grafico.
+#
+# La base dbTraceability no se crea aqui sino con dbInitializer, que es su
+# proposito y respeta el uso de mayusculas en el nombre.
+#
+# Uso:
+#   docker compose up -d
+#   java -jar dbInitializer/target/dbInitializer-1.0-SNAPSHOT.jar
+#   java -jar apiTraceability/target/apiTraceability-1.0-SNAPSHOT.jar
+#
+# El puerto 5442 evita colisiones con otras instancias de PostgreSQL en el host.
 
 services:
-  traceability_db:
-    image: mysql:latest
-    container_name: dbTraceability
+
+  ariadna-db:
+    image: postgres:16.2
+    container_name: ariadna-db
     environment:
-      MYSQL_DATABASE: dbTraceability
-      MYSQL_ROOT_PASSWORD: mysql
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
     ports:
-      - "3326:3306"
+      - "5442:5432"
     volumes:
-      - .\Doc\DataBase\dbTraceability:/docker-entrypoint-initdb.d
+      - ariadna_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [ariadna_network]
+
+volumes:
+  ariadna_db_data:
+
+networks:
+  ariadna_network:
+    driver: bridge
