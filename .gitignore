@@ -43,3 +43,10 @@ build/
 node_modules/
 # Indice local de CodeGraph (por checkout, no se comparte)
 .codegraph/
+
+# Configuracion local del IDE
+.idea/
+
+# Artefactos que regenera el build de npm en el modulo plugin
+plugin/dist/
+plugin/node/

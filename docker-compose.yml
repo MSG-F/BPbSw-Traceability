@@ -1,18 +1,4 @@
-# ARIADNA — base de datos de trazabilidad
-#
-# Solo se contiene la base de datos. El resto del framework es una herramienta
-# de escritorio: traza abre una ventana Swing y apiTraceability la lanza, de
-# modo que no pueden ejecutarse dentro de un contenedor sin servidor grafico.
-#
-# La base dbTraceability no se crea aqui sino con dbInitializer, que es su
-# proposito y respeta el uso de mayusculas en el nombre.
-#
-# Uso:
-#   docker compose up -d
-#   java -jar dbInitializer/target/dbInitializer-1.0-SNAPSHOT.jar
-#   java -jar apiTraceability/target/apiTraceability-1.0-SNAPSHOT.jar
-#
-# El puerto 5442 evita colisiones con otras instancias de PostgreSQL en el host.
+# Only the ARIADNA Traceability Database Service can be containerized; the desktop application cannot.
 
 services:
 
